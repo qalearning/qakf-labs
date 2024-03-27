@@ -8,9 +8,9 @@ The container images we'll use for this lab are ones we'll keep using throughout
 
 ### Task 1 - Spin up a Pod
 
-Create a pod named `simple`, using the `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1` image
+1. Create a pod named `simple`, using the `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1` image
 
-<details><summary>show</summary>
+<details><summary>show command</summary>
 <p>
 
 ```bash
@@ -20,12 +20,16 @@ kubectl run simple --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
 </p>
 </details>
 
-Example output:
+
+<br/>Example output:
 ```
 pod/simple created
 ```
 
-Get the new pod's IP address 
+2. Get the new pod's IP address 
+
+<details><summary>show command</summary>
+<p>
 
 ```bash
 kubectl get pods --output wide
@@ -33,6 +37,10 @@ kubectl get pods --output wide
 kubectl get pod simple --output=custom-columns=IP:.status.podIP --no-headers
 ```
 
+</p>
+</details>
+
+<br/>Example output:
 ```
 NAME     READY   STATUS    RESTARTS   AGE     IP         ...
 simple   1/1     Running   0          3m59s   10.42.0.10 ...
@@ -42,27 +50,43 @@ simple   1/1     Running   0          3m59s   10.42.0.10 ...
 10.42.0.10
 ```
 
-**cURL** the pod's IP address at port 8080
+3. **cURL** the pod's IP address at port 8080
+
+<details><summary>show command</summary>
+<p>
 
 ```bash
 curl 10.42.0.10:8080
 ```
 
+</p>
+</details>
+
+<br/>Example output:
 ```
 I am the backend service. I'm version 1!
 ```
 
 ### Task 2 - Create a YAMLfest
 
-Let’s look at a PodSpec. Similar command to before, but we’re going to perform a dry-run and output the result in YAML format to a file. This is a convenient way to create a kubernetes manifest: 
+4. Let’s look at a PodSpec. Similar command to before, but we’re going to perform a client-side dry-run and output the result in YAML format to a file named pod.yaml. This is a convenient way to create a kubernetes manifest: 
 
+<details><summary>show command</summary>
+<p>
+
+```bash
 kubectl run hello --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 \ 
   --dry-run=client -o yaml > pod.yaml 
+```
 
+</p>
+</details>
+<br/>
 
-Now examine the pod.yaml file. Note that there are a number of properties. Some of these are required and have been added by the api-server when we ran the pod,,some are optional. Note the API version, v1. Pods are part of the “core” kubernetes API. Pods have a “kind” of “Pod”. All k8s resources have a “kind”. Some metadata has also been added. The creationTimestamp is null because the pod was never actually created. A resources stanza has been added to the podspec (more on that much later on) and the pod has a status of null (again, because it was never created). The podspec section is the most important, because all of the controllers we’ll be looking at create and manage pods, somewhere in their manifest. 
+5. Now examine the pod.yaml file. Note that there are a number of properties. Some of these are required and have been added by the api-server when we ran the pod,,some are optional. Note the API version, v1. Pods are part of the “core” kubernetes API. Pods have a “kind” of “Pod”. All k8s resources have a “kind”. Some metadata has also been added. The creationTimestamp is null because the pod was never actually created. A resources stanza has been added to the podspec (more on that much later on) and the pod has a status of null (again, because it was never created). The podspec section is the most important, because all of the controllers we’ll be looking at create and manage pods, somewhere in their manifest. 
 
- 
+<br/>
+
 ```yaml
 apiVersion: v1 
 kind: Pod 
@@ -73,7 +97,7 @@ metadata:
   name: hello 
 spec: 
   containers: 
-  - image: danielives/helloworld:v1 
+  - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 
     name: hello 
     resources: {} 
   dnsPolicy: ClusterFirst 
@@ -83,7 +107,7 @@ status: {}
 
 ### Task 3 - Create a ReplicaSet
 
-A Pod is fine, but we probably want to “guarantee” that we have at least one pod of our application running at all times. This is a job for a ReplicaSet! Create a file called rs.yaml and add the following content to it (there is no convenient shorthand for generating a ReplicaSet manifest): 
+6. A Pod is fine, but we probably want to “guarantee” that we have at least one pod of our application running at all times. This is a job for a ReplicaSet! Create a file called rs.yaml and add the following content to it (there is no convenient shorthand for generating a ReplicaSet manifest): 
 
 rs.yaml: 
 ```yaml
@@ -110,17 +134,34 @@ spec:
 
 Note the apiVersion is apps/v1. ReplicaSets aren’t part of the “core” API. We’re saying that we always want to have 3 pods running and the podspec from before is now nested in the ReplicaSet’s template stanza. 
 
-Let’s create the ReplicaSet. Tell Kubernetes to `apply` this manifest to the cluster. 
+7. Let’s create the ReplicaSet. Tell Kubernetes to `apply` this manifest to the cluster. 
+
+<details><summary>show command</summary>
+<p>
 
 ```bash
 kubectl apply -f rs.yaml 
 ```
 
-List your pods and replicasets ("rs" is the short name for replicaset) 
+</p>
+</details>
+<br/>
 
+8. List your pods and replicasets ("rs" is the short name for replicaset) 
+
+<details><summary>show command</summary>
+<p>
+
+```bash
 kubectl get pod,rs 
+```
 
-Example output: 
+</p>
+</details>
+<br/>
+
+Example output:
+```
 NAME              READY   STATUS              RESTARTS   AGE 
 pod/hello-4r2w5   0/1     ContainerCreating   0          11s 
 pod/hello-m2hnb   1/1     Running             0          11s 
@@ -128,19 +169,29 @@ pod/hello-vr7wl   1/1     Running             0          11s
 
 NAME                    DESIRED   CURRENT   READY   AGE 
 replicaset.apps/hello   3         3         2       11s 
-
+```
 
 Note that your pods now have auto-generated names and in the example output above, the Desired is 3 but the Ready is 2 because one pod is still in a ContainerCreating state. Your output may show 0-3 Ready pods depending on how fast you type! 
 
 ### Task 4 - Delete a Pod managed by a ReplicaSet
 
-Now delete a pod (you’ll need to use one of the auto-generated names. I’m using the first one in my list) and then immediately list your pods and ReplicaSets again: 
+9. Now delete a pod (you’ll need to use one of the auto-generated names. I’m using the first one in my list) and then immediately list your pods and ReplicaSets again: 
 
+<details><summary>show command</summary>
+<p>
+
+```bash
 kubectl delete pod hello-4r2w5 --wait=false && kubectl get pods,rs
+```
+
+</p>
+</details>
+<br/>
 
 We told kubectl not to wait for finalisers so hopefully we can see output similar to the following (again, it all depends on how fast you type!): 
 
-
+Example output:
+```bash
 NAME              READY   STATUS              RESTARTS   AGE 
 pod/hello-6sxx7   0/1     ContainerCreating   0          2s 
 pod/hello-kmgdb   0/1     Terminating         0          61s 
@@ -149,68 +200,111 @@ pod/hello-vr7wl   1/1     Running             0          15m
 
 NAME                    DESIRED   CURRENT   READY   AGE 
 replicaset.apps/hello   3         3         2       15m 
+```
 
 The ReplicaSet controller “noticed” almost immediately that we were down to 2 pods and told the api-server to run a new one. How does it know? The labels. In the spec there is a `matchLabels` stanza which is looking for a `label` of `app` with a value of `hello`. The podspec in the template specifies that each pod should be created with a label of app with a value of hello. The replicaset asks the api-server how many pods have that label and if the number is wrong, it tells the api-server to add or remove pods 
 
 ### Task 5 - Confuse the ReplicaSet
 
-Let’s confuse the ReplicaSet controller. We’ll manually modify the label of one of our pods so it no longer matches the selector: 
+10. Let’s confuse the ReplicaSet controller. We’ll manually modify the label of one of our pods so it no longer matches the selector: 
 
+<details><summary>show command</summary>
+<p>
+
+```bash
 kubectl edit pod hello-6sxx7 
+```
+
+</p>
+</details>
+<br/>
 
 The default editor is vim, but that’s OK, we’re not doing much with it! 
 
 Use the cursor keys to line up on the `app: hello` label near the top of the file. 
 
-Press the <i> key to enter INSERT mode and change the value from “hello” to … well, whatever you like. I went with “quarantined” but just putting the number 1 immediately after the “o” will do it. 
+11. Press the `<i>` key to enter INSERT mode and change the value from “hello” to … well, whatever you like. I went with “quarantined” but just putting the number 1 immediately after the “o” will do it. 
 
-Hit <ESC> to go back to command mode, type a colon (“:”) and then type “x” (for eXit and save) and hit <enter>.
+12. Hit `<esc>` to go back to command mode, type a colon (“:”) and then type “x” (for eXit and save) and hit `<enter>`.
 
-List your pods and ReplicaSets again. You should now have 4! All named hello-something. 
+13. List your pods and ReplicaSets again. You should now have 4! All named hello-something. 
 
-List pods again, but this time ask kubernetes to show you their labels: 
+14. List pods again, but this time ask kubernetes to show you their labels: 
 
+<details><summary>show command</summary>
+<p>
 
+```bash
 kubectl get pods --show-labels 
+```
+
+</p>
+</details>
+<br/>
 
  
 
 Example output: 
-
+```
 NAME          READY   STATUS    RESTARTS   AGE    LABELS 
 hello-45f6t   1/1     Running   0          39s    app=hello 
 hello-5s5pd   1/1     Running   0          104s   app=quarantined 
 hello-qbqsm   1/1     Running   0          104s   app=hello 
 hello-s6k9l   1/1     Running   0          104s   app=hello 
+```
 
-Delete the dodgy pod. 
+15. Delete the dodgy pod. 
 
+<details><summary>show command</summary>
+<p>
+
+```bash
 kubectl delete pod hello-5s5pd
+```
+
+</p>
+</details>
+<br/>
 
 ### Task 6 - Update the ReplicaSet
 
 Now let’s try to update our replicaset to use v2 of the awesome application. 
 
-Edit (or create a copy of) your rs.yaml file and change the image in the podspec to point to :v2 (it should be the very last line) 
+16. Edit (or create a copy of) your rs.yaml file and change the image in the podspec to point to :v2 (it should be the very last line) 
 
+```yaml
         image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 
-
+```
  
 
-Now try to apply the new version. 
+17. Now try to apply the new version. 
 
- 
+<details><summary>show command</summary>
+<p>
 
+```bash
 kubectl apply -f rs2.yaml 
+```
+
+</p>
+</details>
+<br/>
 
 
-Looks like it worked. But if you list all your pods again, you’ll see that they haven’t been recreated. 
+18. Looks like it worked. But if you list all your pods again, you’ll see that they haven’t been recreated. 
 
-Try finding the pods’ images (this command is case sensitive): 
+19. Try finding the pods’ images (this command is case sensitive): 
 
- 
+<details><summary>show command</summary>
+<p>
 
+```bash
 kubectl describe pod | grep Image 
+```
+
+</p>
+</details>
+<br/>
 
  
 
