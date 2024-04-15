@@ -426,9 +426,16 @@ kubectl get service lab2frontend --all-namespaces
 </details>
 <br/>
 
-28. **Stretch goal 1 - optional** also create a test namespace and create and expose the frontend deployment therein.
+<details><summary>Stretch goals - optional</summary>
+<p>
 
-29. **Stretch goal 2 - optional** there are also placeholders for the pod name and the node name on the frontend image's homepage. See if you get those values to display instead of *unknown*.  Adding the pod's name to the deployment's environment variables is very similar to how you added the namespace, but the node name might involve a bit of web searching.
+28. **OPTIONAL Stretch goal 1** also create a test namespace and create and expose the frontend deployment therein.
+
+29. **OPTIONAL Stretch goal 2** there are also placeholders for the pod name and the node name on the frontend image's homepage. See if you can get those values to display instead of *unknown*.  Adding the pod's name to the deployment's environment variables is very similar to how you added the namespace, but the node name might involve a bit of web searching.
+
+</p>
+</details>
+<br/>
 
 30. Tidy up. Delete all three deployments and the two services.
 
