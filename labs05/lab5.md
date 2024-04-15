@@ -51,7 +51,7 @@ Get all 10 pods' logs
 
 Must be an easy way, right?
 
-for pod in $(k get pods -l=job-name=randoms -o name); do k logs $pod; done
+for pod in $(kubectl get pods -l=job-name=randoms -o name); do kubectl logs $pod; done
 
 ## 5.3 CronJobs
 
@@ -62,3 +62,18 @@ Take a 10-minute break.
 Check logs.
 
 Delete CronJob
+
+## 5.4 Helm
+
+Install helm
+
+search hub
+
+add bitnami repo
+
+install apache "my-web"
+
+upgrade, changing the service type to clusterIP.
+
+(stretch: Create an ingress rule for it at web.yourip.nip.io)
+
