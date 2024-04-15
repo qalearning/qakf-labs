@@ -204,80 +204,18 @@ replicaset.apps/hello   3         3         2       15m
 
 The ReplicaSet controller “noticed” almost immediately that we were down to 2 pods and told the api-server to run a new one. How does it know? The labels. In the spec there is a `matchLabels` stanza which is looking for a `label` of `app` with a value of `hello`. The podspec in the template specifies that each pod should be created with a label of app with a value of hello. The replicaset asks the api-server how many pods have that label and if the number is wrong, it tells the api-server to add or remove pods 
 
-### Task 5 - Confuse the ReplicaSet
-
-10. Let’s confuse the ReplicaSet controller. We’ll manually modify the label of one of our pods so it no longer matches the selector: 
-
-<details><summary>show command</summary>
-<p>
-
-```bash
-kubectl edit pod hello-6sxx7 
-```
-
-</p>
-</details>
-<br/>
-
-The default editor is vim, but that’s OK, we’re not doing much with it! 
-
-Use the cursor keys to line up on the `app: hello` label near the top of the file. 
-
-11. Press the `<i>` key to enter **INSERT** mode and change the value from “hello” to … well, whatever you like. I went with “quarantined” but just putting the number 1 immediately after the “o” will do it. 
-
-12. Hit `<esc>` to go back to command mode, type a colon (“:”) and then type “x” (for eXit and save) and hit `<enter>`.
-
-13. List your pods and ReplicaSets again. You should now have 4! All named hello-something. 
-
-14. List pods again, but this time ask kubernetes to show you their labels: 
-
-<details><summary>show command</summary>
-<p>
-
-```bash
-kubectl get pods --show-labels 
-```
-
-</p>
-</details>
-<br/>
-
- 
-
-Example output: 
-```
-NAME          READY   STATUS    RESTARTS   AGE    LABELS 
-hello-45f6t   1/1     Running   0          39s    app=hello 
-hello-5s5pd   1/1     Running   0          104s   app=quarantined 
-hello-qbqsm   1/1     Running   0          104s   app=hello 
-hello-s6k9l   1/1     Running   0          104s   app=hello 
-```
-
-15. Delete the dodgy pod. 
-
-<details><summary>show command</summary>
-<p>
-
-```bash
-kubectl delete pod hello-5s5pd
-```
-
-</p>
-</details>
-<br/>
-
-### Task 6 - Update the ReplicaSet
+### Task 5 - Update the ReplicaSet
 
 Now let’s try to update our replicaset to use v2 of the awesome application. 
 
-16. Edit (or create a copy of) your rs.yaml file and change the image in the podspec to point to :v2 (it should be the very last line) 
+10. Edit (or create a copy of) your rs.yaml file and change the image in the podspec to point to :v2 (it should be the very last line) 
 
 ```yaml
         image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 
 ```
  
 
-17. Now try to apply the new version. 
+11. Now try to apply the new version. 
 
 <details><summary>show command</summary>
 <p>
@@ -291,9 +229,9 @@ kubectl apply -f rs2.yaml
 <br/>
 
 
-18. Looks like it worked. But if you list all your pods again, you’ll see that they haven’t been recreated. 
+12. Looks like it worked. But if you list all your pods again, you’ll see that they haven’t been recreated. 
 
-19. Try finding the pods’ images by piping the output of `kubectl describe` to `grep` (this command is case sensitive): 
+13. Try finding the pods’ images by piping the output of `kubectl describe` to `grep` (this command is case sensitive): 
 
 <details><summary>show command</summary>
 <p>
@@ -310,7 +248,7 @@ They’re all running v1 still.
 
 A ReplicaSet will only apply this configuration change when it creates a new pod. Try deleting a pod manually again and then retry finding the pods’ images (the grep command above). You’ll now have one v2 and two v1s. 
 
-20. Try scaling the ReplicaSet to zero and then back up to 3 again: 
+14. Try scaling the ReplicaSet to zero and then back up to 3 again: 
 
 <details><summary>show command</summary>
 <p>
@@ -329,7 +267,7 @@ You’ll now have 3 v2s if you redo the grep command.
 
 ### Task 7 - Recreate the ReplicaSet
 
-21. Delete the rs. 
+15. Delete the rs. 
 
 <details><summary>show command</summary>
 <p>
@@ -344,9 +282,9 @@ kubectl delete rs hello
 
 So that’s fine and it might be desirable behaviour but we might want a controller that manages the rolling-out of new versions for us.
 
-### Task 8 - Create a Deployment
+### Task 7 - Create a Deployment
 
-22. Enter the `Deployment` controller. We’ll create a deployment using the handy command line shorthand again: 
+16. Enter the `Deployment` controller. We’ll create a deployment using the handy command line shorthand again: 
 
 <details><summary>show command</summary>
 <p>
@@ -359,7 +297,7 @@ kubectl create deploy hello --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 -
 </details>
 <br/>
 
-23. Take a look at the manifest file. It looks an awful lot like the ReplicaSet yaml, except it has a `kind` of Deployment and there’s a strategy stanza as well. More about that later. Honest! 
+17. Take a look at the manifest file. It looks an awful lot like the ReplicaSet yaml, except it has a `kind` of Deployment and there’s a strategy stanza as well. More about that later. Honest! 
 
 Apply the manifest: 
 
@@ -374,7 +312,7 @@ kubectl apply -f dep.yaml
 </details>
 <br/>
 
-24. And list your pods, replicasets and deployments: 
+18. And list your pods, replicasets and deployments: 
 
 <details><summary>show command</summary>
 <p>
@@ -403,7 +341,7 @@ deployment.apps/hello   3/3     3            3           10s
  
 Now the replicaset has an autogenerated name and the pods have a double-autogenerated name! What’s happened is your deployment has created a replicaset and your replicaset is ensuring all the pods are present. 
 
-25. Now update the version of the deployment to v2. You can modify the dep.yaml itself, or a copy of it, and apply that, or if you’re feeling vim-venturous you could do a `kubectl edit deploy hello`. It’s entirely up to you but however you do it, once you’ve done it, list your pods, rs and deployments again. 
+19. Now update the version of the deployment to v2. You can modify the dep.yaml itself, or a copy of it, and apply that, or if you’re feeling vim-venturous you could do a `kubectl edit deploy hello`. It’s entirely up to you but however you do it, once you’ve done it, list your pods, rs and deployments again. 
 
 Example output: 
 ```
@@ -422,9 +360,10 @@ deployment.apps/hello   3/3     3            3           15m
 
 We now have 2 rs. If you append `-o wide` onto the end of the get command, you’ll see that the `Deployment` is v2 and one of the `ReplicaSet`s is v1 (with a desired of 0) and the other is v2. Set the version of the deployment back to v1 and the two replicasets will be swapped again. The deployment doesn’t create a new replicaset for v1 because it knows it already has one. 
 
-### Task 9 - expose the application
+## 1.2 - Services
+### Task 8 - expose the application
 
-26. Finally, let’s make this tremendous application accessible to the outside world. That’s going to require a different kind of controller, a Service. Let’s just `expose` the deployment with a `type` of `NodePort` so we can cURL it. 
+20. Finally, let’s make this tremendous application accessible to the outside world. That’s going to require a different kind of controller, a Service. Let’s just `expose` the deployment with a `type` of `NodePort` so we can cURL it. 
 
 <details><summary>show command</summary>
 <p>
@@ -443,7 +382,7 @@ error: couldn't find port via --port flag or introspection
 See 'kubectl expose -h' for help and examples 
 ```
 
-27. The reason for this error message is that I was lazy and couldn’t be bothered to add a port stanza to the podspec. I know it’s listening on port 8080, but Kubernetes doesn’t. The real solution is to add a port stanza to the spec, which should be considered a best practice, but we’ll do it the easy way, by specifying port 8080 in the `kubectl expose` command: 
+21. The reason for this error message is that I was lazy and couldn’t be bothered to add a port stanza to the podspec. I know it’s listening on port 8080, but Kubernetes doesn’t. The real solution is to add a port stanza to the spec, which should be considered a best practice, but we’ll do it the easy way, by specifying port 8080 in the `kubectl expose` command: 
 
 <details><summary>show command</summary>
 <p>
@@ -458,7 +397,7 @@ kubectl expose deploy hello --type=NodePort --port=8080
 
 You haven’t created an "Expose" controller, you’ve created a Service, which provides access to pods running inside the cluster via a single name or IP address. You can expose a pod, or a rs, or a deployment, or other kinds of controllers. In this case, you’ve created a NodePort service, which has exposed our service at a high-numbered port on every node in the cluster.
 
-28. Let’s see if it has worked, by `get`ting the new service: 
+22. Let’s see if it has worked, by `get`ting the new service: 
 
 <details><summary>show command</summary>
 <p>
@@ -480,7 +419,7 @@ hello   NodePort   10.43.123.74   <none>        8080:31907/TCP   31s
 
 <br/>
 
-29. And test it by **cURL**ing the high-numbered NodePort at localhost:
+23. And test it by **cURL**ing the high-numbered NodePort at localhost:
 
 <details><summary>show command</summary>
 <p>
@@ -501,7 +440,7 @@ I am the backend service. I'm version 2.
 
 <br/>
 
-30. Find out your kubernetes host's IP address and point your web browser at the NodePort's port number at that address:
+24. Find out your kubernetes host's IP address and point your web browser at the NodePort's port number at that address:
 
 <details><summary>show command</summary>
 <p>
@@ -514,7 +453,7 @@ hostname -i
 </details>
 <br/>
 
-31. Finally, delete the service and the deployment:
+25. Finally, delete the service and the deployment:
 
 <details><summary>show command</summary>
 <p>
@@ -528,4 +467,4 @@ kubectl delete deploy hello
 </details>
 <br/>
 
-32. That's it, you're done! Let your instructor know that you've finished the lab.
+26. That's it, you're done! Let your instructor know that you've finished the lab.
