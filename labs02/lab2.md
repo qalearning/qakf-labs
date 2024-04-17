@@ -426,7 +426,7 @@ kubectl get service lab2frontend --all-namespaces
 </details>
 <br/>
 
-<details><summary>Stretch goals - optional</summary>
+<details><summary>Stretch goals - optional exercises</summary>
 <p>
 
 28. **OPTIONAL Stretch goal 1** also create a test namespace and create and expose the frontend deployment therein.
