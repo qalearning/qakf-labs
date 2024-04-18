@@ -560,7 +560,7 @@ kubectl get service lab3frontend --all-namespaces
 </details>
 <br/>
 
-<details><summary>Stretch goals - optional exercises</summary>
+<details><summary>Stretch goal - optional exercise</summary>
 <p>
 
 39. **Optional stretch goal** add the secret to the `test` namespace as well, then create and expose the frontend deployment therein.
@@ -586,3 +586,5 @@ kubectl delete service lab3web
 </p>
 </details>
 <br/>
+
+31. That's it, you're done! Let your instructor know that you've finished the lab.

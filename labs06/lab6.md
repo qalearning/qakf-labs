@@ -47,3 +47,4 @@ They should be fine, because they're both listening on port 8080 and k8s can tel
 
 (stretch: what about the backends? **answer** author isn't sure... (maybe runasuser: 1000? Try it!))
 
+That's it, you're done! Let your instructor know that you've finished the lab.

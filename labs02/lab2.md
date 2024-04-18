@@ -453,3 +453,5 @@ kubectl delete service lab2frontend -n development
 </p>
 </details>
 <br/>
+
+31. That's it, you're done! Let your instructor know that you've finished the lab.

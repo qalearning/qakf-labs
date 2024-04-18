@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: test
+  name: dsweb
 spec:
   selector:
     matchLabels:
-      app: test
+      app: dsweb
   template:
     metadata:
       labels:
-        app: test
+        app: dsweb
     spec:
       containers:
       - image: httpd
