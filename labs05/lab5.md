@@ -498,7 +498,7 @@ myweb-apache   LoadBalancer   10.99.216.246    <none>        80:30549/TCP,443:30
 <details><summary>Stretch goal - optional exercise</summary>
 <p>
 
-31. **Optional stretch goal** stretch: Create an ingress rule for `myweb` at web.yourip.nip.io. If you do this, you can change the service type to a ClusterIP instead of a NodePort.
+31. **Optional stretch goal** create an ingress rule for `myweb` at web.yourip.nip.io. If you do this, you can change the release's service type to a ClusterIP instead of a NodePort.
 
 </p>
 </details>
