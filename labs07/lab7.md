@@ -1,5 +1,5 @@
-# Lab 6 - Security
-## 6.1 RBAC
+# Lab 7 - Security
+## 7.1 RBAC
 
 We're going to create a pod that prints all of the logs of all of our randoms jobs.
 
@@ -162,7 +162,7 @@ Example output:
 
 <br/>
 
-## 6.2 NetPol
+## 7.2 Network Policies
 
 7. **cURL** the frontend service and the backend service in each ns. You'll need to `get services` in both namespaces and then **cURL** their ClusterIP addresses.
 
@@ -332,7 +332,7 @@ spec:
 </details>
 <br/>
 
-## 6.3 Pod Security
+## 7.3 Pod Security
 
 16. Create an httpd pod with a `securityContext` that sets `runAsNonRoot` to `true`.
 
@@ -349,7 +349,7 @@ kubectl run web \
 </details>
 <br/>
 
-17. Give it a while and then run `kubectl get pods`. You should see a `CreateContainerConfigError` and if you `describe` the pod, you'll see that the httpd image wants to run as root but you've said it can't.
+17. Give it thirty seconds or so and then run `kubectl get pods`. You should see a `CreateContainerConfigError` and if you `describe` the pod, you'll see that the httpd image wants to run as root but you've said it can't.
 
 <details><summary>Stretch goal - optional exercise</summary>
 <p>
