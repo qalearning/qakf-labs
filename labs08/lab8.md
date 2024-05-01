@@ -60,14 +60,14 @@ kubectl top nodes
 
 Another tool which may prove useful when troubleshooting is the Kubernetes Dashboard. Once again, most managed services come with pre-configured dashboard but we'll use Helm to install one on our cluster. We need to install an older version of the Helm chart and override several of the default settings in order to be able to use it.
 
-4. Add a Helm repo named `dashboard` which is located at `https://kubernetes.github.io/dashboard/`
+4. Add a Helm repo named `kubernetes-dashboard` which is located at `https://kubernetes.github.io/dashboard/`
 
 <details><summary>show command</summary>
 <p>
 
 ```bash
-cd~
-helm repo add dashboard https://kubernetes.github.io/dashboard/ 
+cd ~
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/ 
 ```
 
 </p>
@@ -80,10 +80,10 @@ helm repo add dashboard https://kubernetes.github.io/dashboard/
 <p>
 
 ```bash
-helm install kubernetes-dashboard dashboard/kubernetes-dashboard \
+helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
     --set protocolHttp=true \
     --set service.type=NodePort \
-    --set metricsScraper.enabled=true
+    --set metricsScraper.enabled=true \
     --version "6.0.8"
 ```
 
