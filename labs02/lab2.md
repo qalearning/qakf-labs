@@ -419,7 +419,7 @@ kubectl expose deployment lab2frontend --port 8080 --type NodePort -n developmen
 <p>
 
 ```bash
-kubectl get service lab2frontend --all-namespaces
+kubectl get service --all-namespaces
 ```
 
 </p>
