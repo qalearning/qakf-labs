@@ -101,7 +101,7 @@ kubectl get pod -o wide
 
 Example output:
 
-```bash
+```
 pod/kvstore created
 
 NAME  READY  STATUS   RESTARTS   AGE     IP               NODE
@@ -110,7 +110,7 @@ test  1/1    Running  0          22m     192.168.230.22   k8s-worker-1
 
 <br/>
 
-7. Retry adding data to the store.
+7. Retry adding data to the store. Make sure you're curling your pod's IP address.
 
 ```bash
  curl 192.168.230.22:8080/save -d 'name=Nefertiti'
@@ -191,7 +191,7 @@ curl ip-from-previous-command
 
 Example output:
 
-```bash
+```
 NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
 lab3web      ClusterIP   10.43.137.86   <none>        80/TCP           5s
 
@@ -228,7 +228,7 @@ echo '<html><body><h1>Welcome to my home page!</h1></body></html>' > ~/index.htm
 
 15. Delete the deployment (but not the service).
 
-16. Modify the lab3web.yaml file to add a volume of the `hostPath` type, with volume type of `File` and a path of `/home/student/index.html`. Mount the volume in the deployment's pod at a `mountPath` of `/usr/local/apache2/htdocs/index.html`.
+16. Modify the lab3web.yaml file to add a volume of the `hostPath` type, with volume type of `File` and a path of `/home/student/index.html`. Mount the volume in the deployment's pod at a `mountPath` of `/usr/local/apache2/htdocs/`.
 
 <details><summary>show YAML</summary>
 <p>
@@ -236,7 +236,7 @@ echo '<html><body><h1>Welcome to my home page!</h1></body></html>' > ~/index.htm
 ```yaml
         volumeMounts:
         - name: homepage
-          mountPath: /usr/local/apache2/htdocs/index.html
+          mountPath: /usr/local/apache2/htdocs/
       volumes:
       - name: homepage
         hostPath:

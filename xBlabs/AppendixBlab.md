@@ -123,7 +123,7 @@ kubectl get service kubernetes-dashboard
 
 ## 8.3 - OPTIONAL - troubleshoot a broken YAMLfest
 
-In the "starters" directory of this repo there is a file named "08_brokendeploy.yaml". It's a YAMLfest for a deployment that would have worked several years ago when deployment objects were first being added to Kubernetes.
+In the "starters" directory of this repo there is a file named "AppendixB_brokendeploy.yaml". It's a YAMLfest for a deployment that would have worked several years ago when deployment objects were first being added to Kubernetes.
 
 Copy it into your home directory and try to `create` the deployment. It won't work initially.
 

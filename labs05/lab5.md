@@ -336,7 +336,7 @@ spec:
 
 20. Take a 10-minute break.
 
-21. Check logs. We won't be able to use our clever bash script from earlier because the CronJob creates the jobs, which create the pods, so each `job-name` label is unique. Let's start by get all pods.
+21. Check logs. We won't be able to use our clever bash script from earlier because the CronJob creates the jobs, which create the pods, so each `job-name` label is unique. Let's start by `get`ting all pods.
 
 <details><summary>show command</summary>
 <p>

@@ -1,4 +1,6 @@
 #!/bin/bash
+#reset
+kubectl delete namespace production development
 #lab2 changes
 kubectl create namespace production
 kubectl create namespace development
