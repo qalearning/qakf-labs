@@ -4,6 +4,10 @@ from diagrams.k8s.network import Endpoint, Ingress, Service
 from diagrams.k8s.group import NS
 from diagrams.k8s.storage import PV, PVC, StorageClass
 
+graph_attr = {
+    "bgcolor": "transparent"
+}
+
 with Diagram("Lab 4 Ingress"):
     with Cluster("Kubernetes Cluster"):
         ing = Ingress("X.nip.io")
