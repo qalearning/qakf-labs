@@ -21,6 +21,7 @@ kubectl expose deployment frontend --port 80 --target-port 8080 --name frontend 
 kubectl expose deployment frontend --port 80 --target-port 8080 --name frontend -n development
 helm install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
+  --set controller.service.type=NodePort \
   --namespace ingress-nginx --create-namespace
 sleep 30
 #create ingresses for fe and be

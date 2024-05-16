@@ -1,6 +1,7 @@
 #!/bin/bash
 #reset
 kubectl delete namespace production development
+helm uninstall -n ingress-nginx ingress-nginx
 #lab2 changes
 kubectl create namespace production
 kubectl create namespace development
@@ -21,6 +22,7 @@ kubectl expose deployment frontend --port 80 --target-port 8080 --name frontend 
 kubectl expose deployment frontend --port 80 --target-port 8080 --name frontend -n development
 helm install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
+  --set controller.service.type=NodePort \
   --namespace ingress-nginx --create-namespace
 sleep 30
 #create ingresses for fe and be
