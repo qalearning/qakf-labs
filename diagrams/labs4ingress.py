@@ -8,7 +8,7 @@ graph_attr = {
     "bgcolor": "transparent"
 }
 
-with Diagram("Lab 4 Ingress"):
+with Diagram("Lab 4 Ingress", graph_attr=graph_attr):
     with Cluster("Kubernetes Cluster"):
         ing = Ingress("X.nip.io")
         ing_dep = Deployment("Ingress Deployment")
