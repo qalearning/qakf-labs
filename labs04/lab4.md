@@ -1,6 +1,8 @@
 # Lab 4 - Networking
 ## 4.1 Explore CoreDNS
 
+![Lab 4.1 final result](../diagrams/lab_4_coredns.png)
+
 1. Create a `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe` deployment in each of the `dev` and `prod` namespaces, using the `:v2` image in `dev` and the `:v1` image in `production`.
 
 <details><summary>show commands</summary>
@@ -123,6 +125,8 @@ frontend-5b6dcf74cb-kvvvn     1/1     Running   0          14m   192.168.29.154 
 8. **Optional but maybe interesting** `exec` into one of your frontend pods and run `cat /code/app/main.py`. See (around the 25th line) it's just asking for "http://backend"? That's basically what you did earlier with the nslookups. CoreDNS still knows which namespace your workload is running in. And the lack of a port number is why we had to have the service listening on port 80 but forwarding to 8080 (which the app is listening on).
 
 ## 4.2 Install an ingress controller
+
+![Lab 4.2 final result](../diagrams/lab_4_ingress.png)
 
 Because we've exposed the back- and front-end services as `clusterIP`s, we can't currently reach them from "outside" the cluster (the host machine). That's fine for the backend services, but the frontend needs to be reachable. If we were running in a cloud, we could expose the two frontends with two load balancer services, or use the cloud vendor's ingress controller. We'll use a couple of ingress rules behind a single Nginx ingress controller.
 
