@@ -1,5 +1,5 @@
-# Lab 8 Troubleshooting
-## 8.1 - Install the metrics server
+# Appendix B - Troubleshooting
+## B.1 - Install the metrics server
 
 Understanding resource utilisation is an important part of troubleshooting. Most managed Kubernetes services come with the `Metrics Server` already installed, but we're going to manually install it in our cluster.
 
@@ -56,7 +56,7 @@ kubectl top nodes
 </details>
 <br/>
 
-## 8.2 - Install the Kubernetes Dashboard
+## B.2 - Install the Kubernetes Dashboard
 
 Another tool which may prove useful when troubleshooting is the Kubernetes Dashboard. Once again, most managed services come with pre-configured dashboard but we'll use Helm to install one on our cluster. We need to install an older version of the Helm chart and override several of the default settings in order to be able to use it.
 
@@ -121,7 +121,7 @@ kubectl get service kubernetes-dashboard
 
 8. Explore the dashboard. You should be able to see charts displaying CPU and memory usage of your workloads, retrieve logs for individual pods, view configmaps and other cluster resources.
 
-## 8.3 - OPTIONAL - troubleshoot a broken YAMLfest
+## B.3 - OPTIONAL - troubleshoot a broken YAMLfest
 
 In the "starters" directory of this repo there is a file named "AppendixB_brokendeploy.yaml". It's a YAMLfest for a deployment that would have worked several years ago when deployment objects were first being added to Kubernetes.
 

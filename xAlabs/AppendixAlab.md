@@ -1,5 +1,5 @@
-# Lab 6 - Design Patterns
-## 6.1 - Init Containers
+# Appendix A - Design Patterns
+## A.1 - Init Containers
 
 In this exercise, we'll look at yet another way to customise the home page for a web server, this time using initContainers.
 
@@ -90,7 +90,7 @@ curl $(kubectl get svc init-web --no-headers -o=custom-columns=ip:.spec.clusterI
 </details>
 <br/>
 
-## 6.2 Sidecar Pattern
+## A.2 Sidecar Pattern
 
 In this exercise, we'll use a *sidecar* container to continuously synchronise a website running in Kubernetes with a git repository. Yes, it is indeed **yet another** way to customise the home page! If you already have a github account, that's great. If you don't already have a github account, you can either create one now using the instructions that follow, or just use our repository, skipping steps 6, 7 and 8 below. It won't be as much fun though because with your own repository, you'll be able to make changes and see them happening 'live'.
 
