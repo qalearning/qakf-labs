@@ -247,7 +247,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: lab4backend            # ensure this matches your pods' labels
+      app: backend            # ensure this matches your pods' labels
   ingress:
   - from:
       - podSelector:
@@ -381,12 +381,12 @@ kubectl run web \
 
 </p>
 </details>
-<br/>n
+<br/>
 
 <details><summary>Stretch goal - optional exercise</summary>
 <p>
 
-20. **Optional stretch goal** try the same thing with a backend deployment. The simple `runAsNonRoot` won't work in this case because Kubernetes can't tell from the container image that it doesn't need to run as root. Hint: try making it run as a specific user.
+20. **Optional stretch goal** try the same thing with a backend deployment. The simple `runAsNonRoot` won't work in this case because Kubernetes can't tell from the container image that it doesn't need to run as root. Hint: try making it run as a specific user id.
 
 </p>
 </details>
