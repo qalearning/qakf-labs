@@ -25,6 +25,13 @@ helm install ingress-nginx ingress-nginx \
   --set controller.service.type=NodePort \
   --namespace ingress-nginx --create-namespace
 sleep 30
+#modify ingresses if running in AWS
+if [ $(hostname -i) != "172.17.1.10" ]
+then
+  newip=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4/)
+  sed -i "s/172.17.1.10/$newip/g" ../solutions/04_03_prod_ingress.yaml
+  sed -i "s/172.17.1.10/$newip/g" ../solutions/04_03_dev_ingress.yaml
+fi
 #create ingresses for fe and be
 kubectl create -f ../solutions/04_03_dev_ingress.yaml
 kubectl create -f ../solutions/04_03_prod_ingress.yaml
