@@ -46,19 +46,19 @@ kubectl create deployment init-web --image=nginx --replicas=3 --dry-run=client -
 ```yaml
 ...
           mountPath: /usr/share/nginx/html
-    initContainers:
-    - name: init-cont
-      image: alpine
-      command:
-        - sh
-        - "-c"
-        - |
-          echo "<html><body<h1>Welcome to my initContainer homepage!</h1></body></html>" >> "/init/index.html"
-          sleep 30
-      volumeMounts:
-        - name: init-vol
-          mountPath: "/init"
-    volumes:
+      initContainers:
+      - name: init-cont
+        image: alpine
+        command:
+          - sh
+          - "-c"
+          - |
+            echo "<h1>Welcome to my initContainer homepage! </h1>" >> "/init/index.html"
+            sleep 30
+        volumeMounts:
+          - name: init-vol
+            mountPath: "/init"
+      volumes:
 ...
 ```
 
