@@ -181,18 +181,33 @@ kubectl create deploy lab02 --image=httpd --replicas=3 --dry-run=client -o yaml 
 10. Edit the YAMLfest so that the pod template (and only the pod template) adds a label named "owner" with a value of *your name*.
 
 
-<details><summary>show command</summary>
+<details><summary>show YAML</summary>
 <p>
 
 lab2dep.yml:
 ```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lab2
+  name: lab2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lab2
   template:
     metadata:
       labels:
-        app: hello
-        owner: glorfindel # add this line here
+        app: lab2
+#------ Add this line here ------
+        owner: glorfindel
+#--------------------------------
     spec:
       containers:
+      - image: httpd
+        name: httpd
 ```
 
 </p>
@@ -213,6 +228,38 @@ kubectl create deploy lab02second --image=nginx --replicas=3 --dry-run=client -o
 <br/>
 
 12. And once more give the *pod template only* an owner label with a value of *your name*.
+
+<details><summary>show YAML</summary>
+<p>
+
+lab2dep2.yml:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello
+  name: hello
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+#------ Add this line here ------
+        owner: glorfindel
+#--------------------------------
+    spec:
+      containers:
+      - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2
+        name: sbe
+```
+</p>
+</details>
+<br/>
 
 13. Create both deployments.
 
@@ -376,13 +423,32 @@ kubectl create deployment lab2frontend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qa
 24. Edit the YAMLfest to add an env setting that picks up the pod's namespace from the pod's metadata. Our simple front-end (`sfe`) container image uses environment variables to collect some of the information it displays.
 
 ```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lab2frontend
+  name: lab2frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lab2frontend
+  template:
+    metadata:
+      labels:
+        app: lab2frontend
+    spec:
+      containers:
       - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1
-        name: web
+        name: sfe
+# ------ Add these lines ------
         env:
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+# -----------------------------
 ```
 
 25. Apply the manifest in both namespaces.
