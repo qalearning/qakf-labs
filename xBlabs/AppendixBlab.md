@@ -49,7 +49,7 @@ kubectl top nodes
 
 ## B.2 - Install the Kubernetes Dashboard
 
-Another tool which may prove useful when troubleshooting is the Kubernetes Dashboard. Once again, most managed services come with pre-configured dashboard but we'll use Helm to install one on our cluster. We need to install an older version of the Helm chart and override several of the default settings in order to be able to use it.
+Another tool which may prove useful when troubleshooting is the Kubernetes Dashboard. Once again, most managed services come with a pre-configured dashboard but we'll use Helm to install one on our cluster. We need to install an older version of the Helm chart and override several of the default settings in order to be able to use it with our Kubernetes configuration.
 
 3. Add a Helm repo named `kubernetes-dashboard` which is located at `https://kubernetes.github.io/dashboard/`
 

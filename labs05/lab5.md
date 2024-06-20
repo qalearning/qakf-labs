@@ -8,7 +8,7 @@
 <p>
 
 ```bash
-kubectl get daemonsets --all-namespaces --output =wide
+kubectl get daemonsets --all-namespaces --output=wide
 ```
 
 </p>
@@ -17,8 +17,10 @@ kubectl get daemonsets --all-namespaces --output =wide
 
 Example output:
 
-```bash
-
+```
+NAMESPACE     NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   cilium       3         3         3       3            3           kubernetes.io/os=linux   24m
+kube-system   kube-proxy   3         3         3       3            3           kubernetes.io/os=linux   24m
 ```
 
 <br/>
@@ -95,7 +97,7 @@ spec:
 <details><summary>Stretch goal - optional exercise</summary>
 <p>
 
-5. **Optional stretch goal** if you get daemonsets in all namespaces you'll see that you only have two pods running whereas the system daemonsets both have 3. Can you work out why that is (and make it so yours works the same way). Hint: try describing the system ds pods, your ds pods and describing the nodes. This topic is not a part of this course.
+5. **Optional stretch goal** if you `kubectl get` daemonsets in all namespaces you'll see that you only have two pods running whereas the system daemonsets both have 3. Can you work out why that is (and make it so yours works the same way). Hint: try describing the system ds pods, your ds pods and describing the nodes. This topic is not a part of this course.
 
 </p>
 </details>
@@ -199,13 +201,26 @@ kubectl delete -f job.yaml
 <p>
 
 ```yaml
-...
+apiVersion: batch/v1
+kind: Job
+metadata:
   name: randoms
 spec:
-  completions: 3 # add this line
+# ------ Add this line ------ 
+  completions: 3
+# ---------------------------
   template:
     spec:
-...
+      restartPolicy: Never
+      containers:
+      - name: example
+        image: python
+        command:
+        - python3
+        - -c
+        - |
+          import random
+          print(random.randrange(1,100))
 ```
 
 </p>
@@ -249,14 +264,28 @@ kubectl delete -f job.yaml
 <p>
 
 ```yaml
-...
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: randoms
 spec:
-  completions: 10
+  completions: 10    # <== Change the 3 to a 10
+# ------ Add this line ------ 
   parallelism: 3
+# ---------------------------
   template:
-...
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: example
+        image: python
+        command:
+        - python3
+        - -c
+        - |
+          import random
+          print(random.randrange(1,100))
+  completions: 10
 ```
 
 </p>
@@ -368,9 +397,9 @@ What? There are only 3 pods! We left the cronjob running for 10 minutes, so sure
 <p>
 
 ```bash
-kubectl get cj randoms -o yaml | grep Limit
+kubectl get cronjob randoms -o yaml | grep Limit
 #or
-kubectl describe cj randoms | grep Limit
+kubectl describe cronjob randoms | grep Limit
 ```
 
 </p>
@@ -456,7 +485,7 @@ myweb-apache   LoadBalancer   10.99.216.246    <pending>     80:30549/TCP,443:30
 
 <br/>
 
-Note that the service is named `myweb-apache`, which is a combination of the name of th release you installed and the name of the chart. Also note that it has created a LoadBalancer service, which we don't need in this cluster.
+Note that the service is named `myweb-apache`, which is a combination of the name of the release you installed and the name of the chart. Also note that it has created a LoadBalancer service, which we don't need in this cluster.
 
 29. `Upgrade` the release, changing the `service.type` to `NodePort`.
 

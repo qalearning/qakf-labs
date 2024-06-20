@@ -16,7 +16,7 @@ kubectl create -f job.yaml # use the correct YAMLfest here
 </details>
 <br/>
 
-2. Create a pod named `kubectl` using the `bitnami/kubectl` image. Give it a `command` property to `sleep infinity` like we did with busybox in the networking lab to keep it from completing.
+2. Create a pod named `kubectl` using the `bitnami/kubectl` image. Give it a `command` property to `sleep infinity` like we did with the busybox pod in the networking lab to keep it from completing.
 
 <details><summary>show command</summary>
 <p>
@@ -53,9 +53,9 @@ Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:de
 
 The kubectl pod doesn't have permission to get pods or their logs!
 
-4. Create a clusterrole named `pod-logger` that allows `get` and `list` verbs on resources `pods` and `pods/logs`. You can create a YAMLfest to do this and then `apply` it, or you can do it via the command line.
+4. Create a clusterrole named `pod-logger` that allows `get` and `list` verbs on resources `pods` and `pods/logs`. You can create a YAMLfest to do this and then `apply` it, **or** you can do it via the command line.
 
-<details><summary>show command</summary>
+<details><summary>show kubectl command</summary>
 <p>
 
 ```bash
@@ -91,7 +91,7 @@ kubectl create -f clusterrole.yaml
 
 5. Create a rolebinding to bind the ClusterRole to the `default` service account in the `default` namespace. Again you have YAML or command line options.
 
-<details><summary>show command</summary>
+<details><summary>show kubectl command</summary>
 <p>
 
 ```bash
@@ -366,17 +366,54 @@ kubectl run web \
 <p>
 
 ```yaml
-...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
   template:
     metadata:
       labels:
         app: frontend
     spec:
+# ------ Add these lines ------
       securityContext:
         runAsNonRoot: true
+# -----------------------------
       containers:
       - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1
-...
+        name: sfe
+        env:
+        - name: COLOUR
+          valueFrom:
+            configMapKeyRef:
+              name: settings
+              key: colour        
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /data
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: secrets
 ```
 
 </p>

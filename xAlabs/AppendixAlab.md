@@ -22,16 +22,33 @@ kubectl create deployment init-web --image=nginx --replicas=3 --dry-run=client -
 <p>
 
 ```yaml
-...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: init-web
+  name: init-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: init-web
+  template:
+    metadata:
+      labels:
+        app: init-web
+    spec:
       containers:
       - image: nginx
         name: nginx
+# ------ Add these lines ------
         volumeMounts:
         - name: init-vol
           mountPath: /usr/share/nginx/html
       volumes:
       - name: init-vol
         emptyDir: {}
+# -----------------------------
 ```
 
 </p>
@@ -44,8 +61,29 @@ kubectl create deployment init-web --image=nginx --replicas=3 --dry-run=client -
 <p>
 
 ```yaml
-...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: init-web
+  name: init-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: init-web
+  template:
+    metadata:
+      labels:
+        app: init-web
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - name: init-vol
           mountPath: /usr/share/nginx/html
+# ------ Add these lines ------
       initContainers:
       - name: init-cont
         image: alpine
@@ -58,8 +96,10 @@ kubectl create deployment init-web --image=nginx --replicas=3 --dry-run=client -
         volumeMounts:
           - name: init-vol
             mountPath: "/init"
+# ------------------------------
       volumes:
-...
+        - name: init-vol
+          emptyDir: {}
 ```
 
 </p>
@@ -74,7 +114,7 @@ kubectl create deployment init-web --image=nginx --replicas=3 --dry-run=client -
 ```bash
 kubectl create -f init-web.yaml
 kubectl expose deployment init-web --port=80
-curl $(kubectl get svc init-web --no-headers -o=custom-columns=ip:.spec.clusterIP)
+curl $(kubectl get service init-web --no-headers -o=custom-columns=ip:.spec.clusterIP)
 ```
 
 </p>
@@ -121,16 +161,34 @@ kubectl create deployment git-web --image=nginx --replicas=3 --dry-run=client -o
 <p>
 
 ```yaml
-...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: git-web
+  name: git-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: git-web
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: git-web
+    spec:
       containers:
-      - image: nginx
-        name: nginx
+      - image: httpd
+        name: httpd
+# ------ Add these lines ------
         volumeMounts:
         - name: git-vol
-          mountPath: /usr/share/nginx/
+          mountPath: /usr/local/apache2/htdocs/
       volumes:
       - name: git-vol
         emptyDir: {}
+# -----------------------------
 ```
 
 </p>
@@ -150,26 +208,53 @@ GIT_SYNC_DEST | "html"
 <p>
 
 ```yaml
-...
-          mountPath: /usr/share/nginx/
-      - name: git-sync
-      image: k8s.gcr.io/git-sync:v3.1.6
-      volumeMounts:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: git-web
+  name: git-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: git-web
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: git-web
+    spec:
+      containers:
+      - image: nginx
+        name: git-web
+        volumeMounts:
         - name: git-vol
-        mountPath: /tmp/git
-      env:
-        - name: GIT_SYNC_REPO
-          value: https://github.com/qalearning/qakf-sidecar-lab.git
-          # replace the above with your repo's URL
-        - name: GIT_SYNC_BRANCH
-          value: main
-        - name: GIT_SYNC_DEPTH
-          value: "1"
-        - name: GIT_SYNC_DEST
-          value: "html"
-    volumes:
-...
+          mountPath: /usr/share/nginx/
+# ------ Add these lines ------
+      - name: git-sync
+        image: k8s.gcr.io/git-sync:v3.1.6
+        volumeMounts:
+        - name: git-vol
+          mountPath: /tmp/git
+        env:
+          - name: GIT_SYNC_REPO
+            value: https://github.com/qalearning/qakf-sidecar-lab.git
+          - name: GIT_SYNC_BRANCH
+            value: main
+          - name: GIT_SYNC_DEPTH
+            value: "1"
+          - name: GIT_SYNC_DEST
+            value: "html"
+# -------------------------------
+      volumes:
+      - name: git-vol
+        emptyDir: {}
 ```
+
+</p>
+</details>
+<br/>
 
 12. `create` and `expose` the deployment.
 
@@ -193,7 +278,7 @@ kubectl expose deployment git-web --type=NodePort --port=80
 
 16. Modify the commit message to say "updated index.html" and click ""Commit changes".
 
-17. Give it a few seconds (the default interval is 10 seconds) and then curl or browse to the service again.
+17. Give it a few seconds (the default interval is 10 seconds) and then curl or browse to the service again. You should see your modified home page.
 
 <details><summary>Stretch goal - optional exercise</summary>
 <p>

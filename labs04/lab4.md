@@ -142,7 +142,7 @@ helm install ingress-nginx ingress-nginx \
 <p>
 
 ```bash
-kubectl get svc --all-namespaces
+kubectl get services --all-namespaces
 ```
 
 </p>
