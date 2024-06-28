@@ -71,7 +71,8 @@ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 <p>
 
 ```bash
-helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
+helm install kubernetes-dashboard \
+    https://kubernetes.github.io/dashboard/kubernetes-dashboard \
     --set protocolHttp=true \
     --set service.type=NodePort \
     --set metricsScraper.enabled=true \
