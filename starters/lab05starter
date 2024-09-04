@@ -11,8 +11,8 @@ kubectl create secret generic secrets --from-literal password=MySecretPhrase --n
 kubectl create secret generic secrets --from-literal password=ReallySecret --namespace production
 #lab4 changes
 #create fe and be in prod and dev
-kubectl create deploy backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 -n production 
-kubectl create deploy backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 -n development
+kubectl create deploy backend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 -n production 
+kubectl create deploy backend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2 -n development
 kubectl expose deployment backend --port 80 --target-port 8080 --name backend --namespace production 
 kubectl expose deployment backend --port 80 --target-port 8080 --name backend -n development
 kubectl create -f ../solutions/04_01_lab4frontend.yaml -n production

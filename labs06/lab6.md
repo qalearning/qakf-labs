@@ -387,7 +387,7 @@ spec:
         runAsNonRoot: true
 # -----------------------------
       containers:
-      - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1
+      - image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sfe:v1
         name: sfe
         env:
         - name: COLOUR

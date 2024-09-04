@@ -1,14 +1,14 @@
 # Lab 4 - Networking
 ## 4.1 Explore CoreDNS
 ![Lab 4.1 final result](../diagrams/lab_4_coredns.png)
-1. Create a `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe` deployment in each of the `dev` and `prod` namespaces, using the `:v2` image in `dev` and the `:v1` image in `production`.
+1. Create a `public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe` deployment in each of the `dev` and `prod` namespaces, using the `:v2` image in `dev` and the `:v1` image in `production`.
 
 <details><summary>show commands</summary>
 <p>
 
 ```bash
-kubectl create deploy lab4backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 -n production 
-kubectl create deploy lab4backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 -n development
+kubectl create deploy lab4backend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 -n production 
+kubectl create deploy lab4backend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2 -n development
 ```
 
 </p>

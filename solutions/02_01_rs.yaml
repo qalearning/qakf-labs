@@ -16,4 +16,4 @@ spec:
     spec: 
       containers: 
       - name: hello-world 
-        image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
+        image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1

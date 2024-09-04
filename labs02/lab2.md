@@ -25,7 +25,7 @@ spec:
     spec: 
       containers: 
       - name: hello-world 
-        image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
+        image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1
 ```
 
 2. Get a list of all the pods
@@ -254,7 +254,7 @@ spec:
 #--------------------------------
     spec:
       containers:
-      - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2
+      - image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2
         name: sbe
 ```
 </p>
@@ -296,13 +296,13 @@ kubectl get pods -l owner=glorfindel
 
 ### Task 3
 
-16. Create a deployment using `v1` of the *simple backend* image (`public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe`). Give it 5 replicas.
+16. Create a deployment using `v1` of the *simple backend* image (`public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe`). Give it 5 replicas.
 
 <details><summary>show command</summary>
 <p>
 
 ```bash
-kubectl create deploy lab2backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 --replicas=5
+kubectl create deploy lab2backend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 --replicas=5
 ```
 
 </p>
@@ -316,7 +316,7 @@ kubectl create deploy lab2backend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sb
 
 ```bash
 kubectl set image deployments/lab2backend \
-    sbe=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 \
+    sbe=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2 \
     && kubectl rollout pause deployments/lab2backend
 ```
 
@@ -350,11 +350,11 @@ pod/lab2backend-7f8f47dd9c-ctp86   1/1     Running   1 (2m30s ago)   6h8m
 pod/lab2backend-6c559d5b46-9st7h   1/1     Running   1 (2m30s ago)   6h8m
 
 NAME                                     DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES
-replicaset.apps/lab2backend-7f8f47dd9c   4         4         4       2d21h   sbe          public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
-replicaset.apps/lab2backend-6c559d5b46   3         3         3       2d21h   sbe          public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2
+replicaset.apps/lab2backend-7f8f47dd9c   4         4         4       2d21h   sbe          public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1
+replicaset.apps/lab2backend-6c559d5b46   3         3         3       2d21h   sbe          public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2
 
 NAME                          READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES
-deployment.apps/lab2backend   7/5     3            7           2d21h   sbe          public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2
+deployment.apps/lab2backend   7/5     3            7           2d21h   sbe          public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2
 ```
 
 <br/>
@@ -406,13 +406,13 @@ kubectl create ns production
 </details>
 <br/>
 
-23. Now create a YAMLfest for a deployment of the `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1` image. Name the deployment `lab2frontend`.
+23. Now create a YAMLfest for a deployment of the `public.ecr.aws/qa-wfl/qa-wfl/qakf/sfe:v1` image. Name the deployment `lab2frontend`.
 
 <details><summary>show command</summary>
 <p>
 
 ```bash
-kubectl create deployment lab2frontend --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1 \
+kubectl create deployment lab2frontend --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sfe:v1 \
   --dry-run=client -o yaml > lab2frontend.yaml
 ```
 
@@ -440,7 +440,7 @@ spec:
         app: lab2frontend
     spec:
       containers:
-      - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sfe:v1
+      - image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sfe:v1
         name: sfe
 # ------ Add these lines ------
         env:

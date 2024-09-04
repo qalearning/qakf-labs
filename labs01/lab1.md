@@ -8,13 +8,13 @@ The container images we'll use for this lab are ones we'll keep using throughout
 
 ### Task 1 - Spin up a Pod
 
-1. Create a pod named `simple`, using the `public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1` image
+1. Create a pod named `simple`, using the `public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1` image
 
 <details><summary>show command</summary>
 <p>
 
 ```bash
-kubectl run simple --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
+kubectl run simple --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1
 ```
 
 </p>
@@ -75,7 +75,7 @@ I am the backend service. I'm version 1!
 <p>
 
 ```bash
-kubectl run hello --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 \ 
+kubectl run hello --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 \ 
   --dry-run=client -o yaml > pod.yaml 
 ```
 
@@ -97,7 +97,7 @@ metadata:
   name: hello 
 spec: 
   containers: 
-  - image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 
+  - image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 
     name: hello 
     resources: {} 
   dnsPolicy: ClusterFirst 
@@ -129,7 +129,7 @@ spec:
     spec: 
       containers: 
       - name: hello-world 
-        image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1
+        image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1
 ```
 
 Note the apiVersion is apps/v1. ReplicaSets aren’t part of the “core” API. We’re saying that we always want to have 3 pods running and the podspec from before is now nested in the ReplicaSet’s template stanza. 
@@ -211,7 +211,7 @@ Now let’s try to update our replicaset to use v2 of the awesome application.
 10. Edit (or create a copy of) your rs.yaml file and change the image in the podspec to point to :v2 (it should be the very last line) 
 
 ```yaml
-        image: public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v2 
+        image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v2 
 ```
  
 
@@ -290,7 +290,7 @@ So that’s fine and it might be desirable behaviour but we might want a control
 <p>
 
 ```bash
-kubectl create deploy hello --image=public.ecr.aws/w4e1v2x6/qa-wfl/qakf/sbe:v1 --replicas=3 --dry-run=client -o yaml > dep.yaml
+kubectl create deploy hello --image=public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1 --replicas=3 --dry-run=client -o yaml > dep.yaml
 ```
 
 </p>
