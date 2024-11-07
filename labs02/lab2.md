@@ -28,6 +28,18 @@ spec:
         image: public.ecr.aws/qa-wfl/qa-wfl/qakf/sbe:v1
 ```
 
+<details><summary>show command</summary>
+<p>
+
+```bash
+kubectl create -f rs.yaml
+```
+
+</p>
+</details>
+<br/>
+
+
 2. Get a list of all the pods
 
 <details><summary>show command</summary>
@@ -491,6 +503,23 @@ kubectl get service --all-namespaces
 </p>
 </details>
 <br/>
+
+In order to browse to them, you'll need your controller's IP address followed by the `:3xxxx` of your service's nodeport (at the far right of the output).
+
+If you're using our Goto My PC environment, that will be:
+
+```http://k8s-controller-0:3xxxx```
+
+If you're using a cloud environment, use the following command to obtain your Public IP address:
+
+```bash
+curl ifconfig.io
+```
+
+And browse to:
+
+```http://output-from-curl-command:3xxxx```
+
 
 <details><summary>Stretch goals - optional exercises</summary>
 <p>
