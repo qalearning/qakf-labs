@@ -409,7 +409,7 @@ spec:
         name: httpd
         volumeMounts:
         - name: homepage
-# -- Remove the final "/" character from this line --
+# -- Remove the final "/index.html" from this line --
           mountPath: /usr/local/apache2/htdocs
 # ---------------------------------------------------
       volumes:
@@ -431,7 +431,7 @@ spec:
 
 ```bash
 kubectl delete deployment lab3web
-kubectl create deploy lab3webconfigmap.yaml # whatever your edited file is called
+kubectl create -f lab3webconfigmap.yaml # whatever your edited file is called
 ```
 
 </p>
