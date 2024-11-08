@@ -526,7 +526,7 @@ And browse to:
 
 28. **OPTIONAL Stretch goal 1** also create a test namespace and create and expose the frontend deployment therein.
 
-29. **OPTIONAL Stretch goal 2** there are also placeholders for the pod name and the node name on the frontend image's homepage. See if you can get those values to display instead of *unknown*.  Adding the pod's name to the deployment's environment variables is very similar to how you added the namespace, but the node name might involve a bit of web searching.
+29. **OPTIONAL Stretch goal 2** there are also placeholders for the pod name and the node name on the frontend image's homepage. See if you can get those values to display instead of *unknown*.  Adding the pod's name to the deployment's environment variables is very similar to how you added the namespace, but the node name might involve a bit of web searching. The image is expecting an environment variable named `POD_NAME` and another one named `NODE_NAME`.
 
 </p>
 </details>

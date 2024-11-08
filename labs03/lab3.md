@@ -88,8 +88,8 @@ spec:
     - mountPath: /data
       name: data-volume
   volumes:
-    - name: data-volume
-      emptyDir: {}
+  - name: data-volume
+    emptyDir: {}
 # -----------------------------
 ```
 
