@@ -652,7 +652,7 @@ spec:
 <p>
 
 ```bash
-kubectl get service lab3frontend --all-namespaces
+kubectl get service --all-namespaces
 ```
 
 </p>
