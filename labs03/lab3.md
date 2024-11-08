@@ -235,7 +235,7 @@ echo '<html><body><h1>Welcome to my home page!</h1></body></html>' > ~/index.htm
 
 15. Delete the deployment (but not the service).
 
-16. Modify the lab3web.yaml file to add a volume of the `hostPath` type, with volume type of `File` and a path of `/home/student/index.html`. Mount the volume in the deployment's pod at a `mountPath` of `/usr/local/apache2/htdocs/`.
+16. Modify the lab3web.yaml file to add a volume of the `hostPath` type, with volume type of `File` and a path of `/home/student/index.html`. Mount the volume in the deployment's pod at a `mountPath` of `/usr/local/apache2/htdocs/`. Then recreate the deployment.
 
 <details><summary>show YAML</summary>
 <p>
@@ -263,7 +263,7 @@ spec:
 # ------ Add these lines ------
         volumeMounts:
         - name: homepage
-          mountPath: /usr/local/apache2/htdocs/
+          mountPath: /usr/local/apache2/htdocs/index.html
       volumes:
       - name: homepage
         hostPath:
